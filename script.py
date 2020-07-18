@@ -65,10 +65,7 @@ def prepare (args, motd):
 			print ("Found proxies.txt file, using that.")
 		except:
 			print ("Getting proxies from an on-line source...")
-			page = requests.get ("https://proxy-daily.com", headers = headers).text
-			page = page [page.find ("centeredProxyList freeProxyStyle"):]
-			page = page [page.find (">") + 1:]
-			page = page [:page.find ("</div>")]
+			page = requests.get ("https://api.proxyscrape.com/?request=getproxies&proxytype=http&timeout=10000&country=all&ssl=all&anonymity=all", headers = headers).text
 			proxies = page.split ("\n")
 			print ("Loaded {} proxies.".format (len (proxies)))
 
@@ -114,7 +111,7 @@ def vote (url, checkboxID, headers, proxy = None):
 	if (proxy == None):
 		proxies = {}
 	else:
-		proxies = {"https": proxy}
+		proxies = {"https": proxy.strip()}
 
 	try:
 		# Connect
@@ -135,12 +132,16 @@ def vote (url, checkboxID, headers, proxy = None):
 			print ("Vote Successful ({})".format (secToken1))
 		else:
 			if (proxy == None):
-				print ("Vote Unsuccessful (The poll may be doing an IP Check. Use option -p)")
+				pass
+				#print ("Vote Unsuccessful (The poll may be doing an IP Check. Use option -p)")
 			else:
-				print ("Vote Unsuccessful ({})".format (secToken1))
+				pass
+				#print ("Vote Unsuccessful ({})".format (secToken1))
 	except requests.exceptions.ProxyError:
-		print ("Vote Unsuccessful (Invalid Proxy)")
+		pass
+		#print ("Vote Unsuccessful (Invalid Proxy)")
 	except requests.exceptions.ConnectionError:
-		print ("Vote Unsuccessful (Invalid Proxy - Connection Error)")
+		pass
+		#print ("Vote Unsuccessful (Invalid Proxy - Connection Error)")
 
 prepare (args, motd)
