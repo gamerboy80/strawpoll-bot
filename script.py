@@ -143,5 +143,7 @@ def vote (url, checkboxID, headers, proxy = None):
 	except requests.exceptions.ConnectionError:
 		pass
 		#print ("Vote Unsuccessful (Invalid Proxy - Connection Error)")
+	except requests.ReadTimeout:
+		pass
 
 prepare (args, motd)
